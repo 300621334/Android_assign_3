@@ -40,13 +40,50 @@ public class MyCanvasView extends View {
     private static final float TOUCH_TOLERANCE = 4;//buffer so that not every touch is drawn. Rest is just interpolated
     Rect mFrame;
     EditText xStr, yStr;
+    Bundle styleBundle;
     //endregion
 
     //default constructor
     public MyCanvasView(Context context) {
         super(context);
+   /*     //ref to parent activity
+        host = (Activity)context;
+
+
+
+        //get int value for colors. Args=(resources, id for color, theme/null)
+        mBackgroundColor = ResourcesCompat.getColor(getResources(), R.color.opaque_orange, null);
+        mDrawColor = ResourcesCompat.getColor(getResources(), R.color.opaque_yellow, null);
+        //why not int: = getResources().getColor(R.color.opaque_orange)
+
+        // Holds the path we are currently drawing.
+        mPath = new Path();
+
+        // Set up the paint with which to draw.
+        mPaint = new Paint();
+        mPaint.setColor(mDrawColor);
+        mPaint.setAntiAlias(true);// Smoothe out edges
+        mPaint.setDither(true);// Dithering affects colors on higher-precision device
+        mPaint.setStyle(Paint.Style.STROKE); // default: FILL
+        mPaint.setStrokeJoin(Paint.Join.ROUND); // default: MITER
+        mPaint.setStrokeCap(Paint.Cap.ROUND); // default: BUTT
+        mPaint.setStrokeWidth(12); // default: Hairline-width (really thin)
+
+        //Frame color
+        framePaint = new Paint();
+        framePaint.setColor(Color.GREEN);
+        framePaint.setStyle(Paint.Style.STROKE); // default: FILL
+        framePaint.setStrokeWidth(10); // default: Hairline-width (really thin)*/
+    }
+    //2nd constructor
+    public MyCanvasView(Context context, Bundle styleBundle)
+    {
+        super(context);
+
         //ref to parent activity
         host = (Activity)context;
+        this.styleBundle = styleBundle;
+
 
 
 
@@ -74,11 +111,6 @@ public class MyCanvasView extends View {
         framePaint.setStyle(Paint.Style.STROKE); // default: FILL
         framePaint.setStrokeWidth(10); // default: Hairline-width (really thin)
     }
-    //2nd constructor
-    public MyCanvasView(Context context, Bundle styleValues)
-    {
-        super(context);
-    }
     //3rd constructor
     public MyCanvasView(Context context, AttributeSet attributeSet)
     {
@@ -88,6 +120,21 @@ public class MyCanvasView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        //
+        //set color based on radio btn
+        switch (styleBundle.getString("color").trim())
+        {
+            case "Red":
+                mDrawColor = Color.RED;
+                break;
+            case "Green":
+                mDrawColor = Color.GREEN;
+                break;
+            case "Yellow":
+                mDrawColor = Color.YELLOW;
+                break;
+        }
 
         //Display coordinates. Must be inside onDraw(). Doesn't work anywhere else
         xStr = host.findViewById(R.id.txtValueX);
