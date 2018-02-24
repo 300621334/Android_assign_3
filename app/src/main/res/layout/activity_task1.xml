@@ -152,28 +152,31 @@
             android:text="Clear" />
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/txtX"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="X: " />
 
         <EditText
-            android:layout_weight="4"
+            android:id="@+id/txtValueX"
             android:layout_width="10dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/txtY"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Y: "/>
+            android:text="Y: " />
 
         <EditText
-            android:layout_weight="4"
+            android:id="@+id/txtValueY"
             android:layout_width="10dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="4" />
     </LinearLayout>
 
     <!--Canvas-->
@@ -188,11 +191,16 @@
         android:orientation="horizontal">
 
         <ImageView
-            android:id="@+id/imgInCanvas"
+            android:id="@+id/imgViewInCanvas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="getWidthHeigtht"
             />
+
+        <!--https://stackoverflow.com/questions/32950935/i-want-to-extend-view-from-a-activity-class-->
+       <!-- <shafiq.shafiq_ur_rehman_comp304_lab_assign3.MyCanvasView
+            android:id="@+id/myCustomView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />-->
 
     </LinearLayout>
 
