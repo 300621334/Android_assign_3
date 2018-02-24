@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="shafiq.shafiq_ur_rehman_comp304_lab_assign3.Task1"
+    android:orientation="vertical">
+
+    <!--Headers-->
+    <LinearLayout
+        android:id="@+id/layoutHEADER"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        >
+        <!--with width=0dp, layout_weight="1" & "2" & "1" will divide parent space into 1+2+1=4 equal parts & then assign 1 & 2 & 1 portions to ea child
+        https://coderanch.com/t/610485/set-size-elements-layout-percent-->
+        <TextView
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Line Thickness" />
+        <TextView
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Line Color"/>
+        <TextView
+            android:layout_weight="1"
+            android:gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Arrow Keys"/>
+
+    </LinearLayout>
+
+    <!--DropDowns-->
+    <LinearLayout
+        android:id="@+id/layoutTOP"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Spinner
+            android:spinnerMode="dropdown"
+            android:entries="@array/dropLineThickness"
+            android:id="@+id/spinner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+        <RadioGroup
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:gravity="start"
+            android:paddingLeft="50dp">
+
+            <RadioButton
+                android:id="@+id/radioButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Red" />
+
+            <RadioButton
+                android:id="@+id/radioButton2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Green" />
+
+            <RadioButton
+                android:id="@+id/radioButton3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Yellow" />
+        </RadioGroup>
+
+        <RelativeLayout
+            android:id="@+id/arrowBtns"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1.3">
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/holo_green_dark"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/arrow_down_24dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerInParent="true"
+                android:background="@android:color/holo_green_dark"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/arrow_left_24dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:background="@android:color/holo_green_dark"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/arrow_right_24dp" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerHorizontal="true"
+                android:background="@android:color/holo_green_dark"
+                android:scaleX="0.8"
+                android:scaleY="0.8"
+                android:src="@drawable/arrow_up_24dp" />
+        </RelativeLayout>
+
+  <!--      <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:entries="@array/dropLineThickness"
+            android:spinnerMode="dropdown"/>-->
+
+    </LinearLayout>
+
+    <!--Clear btn-->
+    <LinearLayout
+        android:id="@+id/layoutMID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:text="Clear" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="X: " />
+
+        <EditText
+            android:layout_weight="4"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="Y: "/>
+
+        <EditText
+            android:layout_weight="4"
+            android:layout_width="10dp"
+            android:layout_height="wrap_content" />
+    </LinearLayout>
+
+    <!--Canvas-->
+    <LinearLayout
+        android:id="@+id/layoutCanvas"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginBottom="20dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/imgInCanvas"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+    </LinearLayout>
+
+</LinearLayout>
