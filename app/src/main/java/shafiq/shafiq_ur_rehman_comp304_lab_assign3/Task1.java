@@ -1,28 +1,45 @@
 package shafiq.shafiq_ur_rehman_comp304_lab_assign3;
 
+import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Spinner;
 
 //Good = https://google-developer-training.gitbooks.io/android-developer-advanced-course-practicals/unit-5-advanced-graphics-and-views/lesson-11-canvas/11-1b-p-draw-on-a-canvas/11-1b-p-draw-on-a-canvas.html
 //https://google-developer-training.gitbooks.io/android-developer-advanced-course-practicals/unit-5-advanced-graphics-and-views/lesson-11-canvas/11-1a-p-create-a-simple-canvas/11-1a-p-create-a-simple-canvas.html
-public class Task1 extends AppCompatActivity {
+public class Task1 extends Activity {
 
+    //region Variables
     boolean isMouseDown = false, isMouseMoving = false;
     ImageView imgV;//ctrl that'll hold canvas(drawing surface made of px)
     Bitmap bmp;//Holds pixels. Canvas is made up of pixels. Hence pass bmp to canvas. Canvas is wrapper around bmp
     Canvas canvas;//surface on w to draw. Has fn to instruct the drawing.
     Paint paint;//brush/pen to draw pixels with
+    int startx = 10;
+    int starty = 10;
+    int endx=10;
+    int endy=10;
+    Spinner sizeSpinner;
+    RadioGroup radGp;
+    float lineSize = 20;
+    int lineColor = Color.RED;
 
     //W & H of View is NOT calculated unless onCreate() is fully finished executing. Hence get W/H via onClick()
     int vWidth, vHeight;
+    //endregion
 
 
     @Override
@@ -30,42 +47,151 @@ public class Task1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task1);
         imgV = (ImageView) findViewById(R.id.imgInCanvas);
-        bmp = Bitmap.createBitmap(1/*imgV.getWidth()*/, 1 /*imgV.getHeight()*/, Bitmap.Config.ARGB_8888);//err W & Ht must b > 0 bcoz inside onCreate() W/Ht of view are not available yet//a Bitmap.config configuration object. A bitmap configuration describes how pixels are stored. Each color is encoded in 8 bits (8+8+8+8=4bytes)
-        //associate Canvas   with mBitmap, so that drawing on the canvas draws on the bitmap
-        canvas = new Canvas(bmp);//providing a bmp explicitly to canvas. bcoz it's a wrapper around Bitmap. If a class extends View then onDraw(Canvas) of View provides a canvas for that view
-        canvas.drawColor(Color.BLACK);//paint the whole canvas as black surface
-        imgV.draw(canvas);//re-draws imgV on top of canvas I provide, by passing it to onDraw(canvas) instead of canvas provided by Android. Init draw was done at setContentView()
-        imgV.setImageBitmap(bmp);
+        radGp = findViewById(R.id.radGpColor);
+        sizeSpinner = (Spinner) findViewById(R.id.spinSize);
+
+
+
 
         paint = new Paint();
         //canvas = setCanvas(canvas);
-        paint = setPaint(paint);
+        paint = setPaint();
 
 
-        //MousePressed on ImageView containing canvas
-        findViewById(R.id.layoutCanvas).setOnTouchListener(new View.OnTouchListener(){//Listener for mouse down etc
-
+        //region: Listen to changes in Color/Size selection
+        radGp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
+        {
+            /*
+            * NOTE: RadBtn Index & ID are 2 different things
+            * 'i' below is ID (NOT index) w is like 231987387 sth >> so >> findViewByID(i)
+            * CANNOT do .getChildAt(i)....
+            * https://stackoverflow.com/questions/45484718/im-trying-to-get-the-radio-buttons-textfrom-a-fragment-but-its-showing-null
+            * */
             @Override
-            public boolean onTouch(View view, MotionEvent e) {
-                isMouseDown = (e.getAction() == MotionEvent.ACTION_DOWN);//true if mouse pressed
-                isMouseMoving = (e.getAction() == MotionEvent.ACTION_MOVE);//mouse moving?
+            public void onCheckedChanged(RadioGroup radioGroup, int id) {
+                View v = findViewById(id);
+                RadioButton b = (RadioButton)v;
+                int index = radioGroup.indexOfChild(b);
+                RadioButton r = (RadioButton)radioGroup.getChildAt(index);
+                String txt = r.getText().toString().toUpperCase();
 
-                if(isMouseMoving && isMouseDown)
+                switch(txt)
                 {
-                    drawOnCanvas(e.getX(), e.getY());
+                    case "RED":
+                        lineColor = Color.RED;
+                        break;
+                    case "GREEN":
+                        lineColor = Color.GREEN;
+                            break;
+                    case "YELLOW":
+                        lineColor = Color.YELLOW;
+                        break;
                 }
-                return false;
+                setPaint();
             }
         });
+        sizeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                lineSize = Float.parseFloat(adapterView.getSelectedItem().toString());
+                setPaint();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                adapterView.setSelection(0);
+                lineSize = 20.0f;
+                setPaint();
+            }
+        });
+        //endregion
+
+        //SInce content view size is NOT measures until onCreate finishes. so nee to call a method AFTER that
+        imgV.post(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                vWidth = imgV.getWidth();
+                vHeight = imgV.getHeight();
+                bmp = Bitmap.createBitmap(vWidth, vHeight, Bitmap.Config.ARGB_8888);//err W & Ht must b > 0 bcoz inside onCreate() W/Ht of view are not available yet//a Bitmap.config configuration object. A bitmap configuration describes how pixels are stored. Each color is encoded in 8 bits (8+8+8+8=4bytes)
+
+                //associate Canvas   with mBitmap, so that drawing on the canvas draws on the bitmap
+                canvas = new Canvas(bmp);//providing a bmp explicitly to canvas. bcoz it's a wrapper around Bitmap. If a class extends View then onDraw(Canvas) of View provides a canvas for that view
+                canvas.drawColor(Color.BLACK);//paint the whole canvas as black surface
+                imgV.draw(canvas);//re-draws imgV on top of canvas I provide, by passing it to onDraw(canvas) instead of canvas provided by Android. Init draw was done at setContentView()
+                imgV.setImageBitmap(bmp);
+            }
+        });
+
     }//onCreate ends
 
-    private Paint setPaint(Paint p) {
-        p.setColor(Color.RED);
-        p.setStrokeWidth(5);
+
+
+    //Override Activity method for key strokes
+    /*Activate the DPAD on emulator:
+    Go to: C:\Users\Shafi\.android\avd\<device name e.g. Nexus_5X_API_27.avd>\config.ini
+    change the settings in config.ini file in .android folder
+    hw.dPad=yes
+    hw.mainKeys=yes*/
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        imgV.setFocusable(true);
+        imgV.requestFocus();
+
+        //return super.onKeyDown(keyCode, event);
+        switch (keyCode)
+        {
+            case KeyEvent.KEYCODE_DPAD_DOWN:
+                endy += 5;
+                drawLine( keyCode,canvas);
+                imgV.invalidate();
+                return  true;
+            case KeyEvent.KEYCODE_DPAD_UP:
+                endy -=5;
+                drawLine( keyCode,canvas);
+                imgV.invalidate();
+                return  true;
+            case KeyEvent.KEYCODE_DPAD_LEFT:
+                endx -=5;
+                drawLine( keyCode,canvas);
+                imgV.invalidate();
+                return  true;
+            case KeyEvent.KEYCODE_DPAD_RIGHT:
+                endx +=5;
+                drawLine( keyCode,canvas);
+                imgV.invalidate();
+                return  true;
+        }
+        return  false;//if none of 4 keys
+    }
+
+    //Draw Line
+    private void drawLine(int keyCode, Canvas canvas) {
+        ((EditText)findViewById(R.id.txtX)).setText(String.valueOf(endx));
+        ((EditText)findViewById(R.id.txtY)).setText(String.valueOf(endy));
+        canvas.drawLine(startx,starty,endx,endy,paint);
+        startx = endx;
+        starty=endy;
+    }
+
+    //Clear Canvas
+    public void clearCanvas(View view)
+    {
+        canvas.drawColor(Color.BLACK);
+        ((EditText)findViewById(R.id.txtX)).setText("");
+        ((EditText)findViewById(R.id.txtY)).setText("");
+        startx = endx = 10;
+        starty= endy=10;
+    }
+    private Paint setPaint() {
+        paint.setColor(lineColor);
+        paint.setStrokeWidth(lineSize);
         //p.setStyle(Paint.Style.FILL);//to fill rect etc, then no nee for setStrokeWidth() bcoz border will not be separately visible
-        p.setStyle(Paint.Style.STROKE);
-        p.setAntiAlias(true);//smooth lines
-        return p;
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setAntiAlias(true);//smooth lines
+        return paint;
     }
 
     private Canvas setCanvas(Canvas c) {
@@ -77,6 +203,4 @@ public class Task1 extends AppCompatActivity {
         canvas.drawCircle(x, y, 50, paint);
     }
 
-    public void getWidthHeigtht(View view) {
-    }
 }

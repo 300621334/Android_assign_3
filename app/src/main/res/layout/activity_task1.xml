@@ -21,12 +21,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="Line Thickness" />
+
         <TextView
-            android:layout_weight="2"
-            android:gravity="center_horizontal"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="Line Color"/>
+            android:layout_weight="2"
+            android:gravity="center_horizontal"
+            android:text="Line Color" />
         <TextView
             android:layout_weight="1"
             android:gravity="center_horizontal"
@@ -44,19 +45,24 @@
         android:orientation="horizontal">
 
         <Spinner
-            android:spinnerMode="dropdown"
-            android:entries="@array/dropLineThickness"
-            android:id="@+id/spinner"
+            android:id="@+id/spinSize"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"/>
+            android:layout_weight="1"
+            android:entries="@array/dropLineThickness"
+            android:spinnerMode="dropdown"
+            android:focusable="false"
+            android:focusableInTouchMode="false"/>
 
         <RadioGroup
+            android:id="@+id/radGpColor"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="2"
             android:gravity="start"
-            android:paddingLeft="50dp">
+            android:paddingLeft="50dp"
+            android:focusable="false"
+            android:focusableInTouchMode="false">
 
             <RadioButton
                 android:id="@+id/radioButton"
@@ -149,6 +155,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="4"
+            android:onClick="clearCanvas"
             android:text="Clear" />
 
         <TextView
@@ -159,21 +166,30 @@
             android:text="X: " />
 
         <EditText
-            android:layout_weight="4"
+            android:id="@+id/txtX"
             android:layout_width="10dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="none"/>
 
         <TextView
             android:id="@+id/textView2"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
+            android:focusable="false"
             android:text="Y: "/>
 
         <EditText
-            android:layout_weight="4"
+            android:id="@+id/txtY"
             android:layout_width="10dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:layout_weight="4"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:inputType="none"/>
     </LinearLayout>
 
     <!--Canvas-->
@@ -187,11 +203,15 @@
         android:layout_marginTop="20dp"
         android:orientation="horizontal">
 
+
+
+        <!--Focus tags here cause misbehaviour!!!
+        android:focusableInTouchMode="true"
+        android:focusable="true"-->
         <ImageView
             android:id="@+id/imgInCanvas"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:onClick="getWidthHeigtht"
             />
 
     </LinearLayout>
