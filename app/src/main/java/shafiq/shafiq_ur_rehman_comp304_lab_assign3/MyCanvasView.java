@@ -1,5 +1,6 @@
 package shafiq.shafiq_ur_rehman_comp304_lab_assign3;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
@@ -9,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.Icon;
+import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -16,6 +18,7 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 /**
  * Created by Shafiq on 2018-02-23.
@@ -26,6 +29,7 @@ import android.widget.LinearLayout;
 public class MyCanvasView extends View {
 
     //region Variables
+    Activity host;
     private Paint mPaint, framePaint;
     private Path mPath;
     private int mDrawColor;
@@ -35,11 +39,17 @@ public class MyCanvasView extends View {
     public float mX, mY;
     private static final float TOUCH_TOLERANCE = 4;//buffer so that not every touch is drawn. Rest is just interpolated
     Rect mFrame;
+    EditText xStr, yStr;
     //endregion
 
     //default constructor
     public MyCanvasView(Context context) {
         super(context);
+        //ref to parent activity
+        host = (Activity)context;
+
+
+
         //get int value for colors. Args=(resources, id for color, theme/null)
         mBackgroundColor = ResourcesCompat.getColor(getResources(), R.color.opaque_orange, null);
         mDrawColor = ResourcesCompat.getColor(getResources(), R.color.opaque_yellow, null);
@@ -65,34 +75,28 @@ public class MyCanvasView extends View {
         framePaint.setStrokeWidth(10); // default: Hairline-width (really thin)
     }
     //2nd constructor
+    public MyCanvasView(Context context, Bundle styleValues)
+    {
+        super(context);
+    }
+    //3rd constructor
     public MyCanvasView(Context context, AttributeSet attributeSet)
     {
     super(context);
-
-/*    //get int value for colors. Args=(resources, id for color, theme/null)
-    mBackgroundColor = ResourcesCompat.getColor(getResources(), R.color.opaque_orange, null);
-    mDrawColor = ResourcesCompat.getColor(getResources(), R.color.opaque_yellow, null);
-    //why not int: = getResources().getColor(R.color.opaque_orange)
-
-    // Holds the path we are currently drawing.
-    mPath = new Path();
-
-    // Set up the paint with which to draw.
-    mPaint = new Paint();
-    mPaint.setColor(mDrawColor);
-    mPaint.setAntiAlias(true);// Smoothe out edges
-    mPaint.setDither(true);// Dithering affects colors on higher-precision device
-    mPaint.setStyle(Paint.Style.STROKE); // default: FILL
-    mPaint.setStrokeJoin(Paint.Join.ROUND); // default: MITER
-    mPaint.setStrokeCap(Paint.Cap.ROUND); // default: BUTT
-    mPaint.setStrokeWidth(12); // default: Hairline-width (really thin)*/
-
-
 }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+
+        //Display coordinates. Must be inside onDraw(). Doesn't work anywhere else
+        xStr = host.findViewById(R.id.txtValueX);
+        yStr = host.findViewById(R.id.txtValueY);
+        xStr.setText(Float.toString(mX));
+        yStr.setText(Float.toString(mY));
+        xStr.setText(String.format("%.0f", mX));
+        yStr.setText(String.format("%.0f", mY));
+
 
         /*this canvas linked to view is different than canvas I made in onSizeChanged()
         But pass uses same bitmap i.e. draws on same bitmap*/
@@ -141,7 +145,7 @@ into this listener, and we don't want to invalidate the view for those.*/
                 break;
             case MotionEvent.ACTION_MOVE:
                 touchMove(x, y);
-                invalidate();
+                invalidate();//calls onDraw() again
                 break;
             case MotionEvent.ACTION_UP:
                 touchUp();
@@ -160,6 +164,9 @@ into this listener, and we don't want to invalidate the view for those.*/
 
     //Calculate the distance that has been moved (dx, dy).
     private void touchMove(float x, float y) {
+
+
+
         float dx = Math.abs(x - mX);
         float dy = Math.abs(y - mY);
         if (dx >= TOUCH_TOLERANCE || dy >= TOUCH_TOLERANCE) {
@@ -174,6 +181,7 @@ into this listener, and we don't want to invalidate the view for those.*/
             mExtraCanvas.drawPath(mPath, mPaint);
         }
     }
+
 
     //Reset the path so it doesn't get drawn again when you draw more lines on the screen.
     private void touchUp() {
