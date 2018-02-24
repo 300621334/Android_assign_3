@@ -39,6 +39,7 @@ public class Task1 extends Activity {
 
     //W & H of View is NOT calculated unless onCreate() is fully finished executing. Hence get W/H via onClick()
     int vWidth, vHeight;
+
     //endregion
 
 
@@ -58,7 +59,7 @@ public class Task1 extends Activity {
         paint = setPaint();
 
 
-        //region: Listen to changes in Color/Size selection
+        //region>>> Listen to changes in Color/Size selection
         radGp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
         {
             /*
@@ -104,6 +105,27 @@ public class Task1 extends Activity {
                 setPaint();
             }
         });
+
+        //Touch Listener works BUT messes up CLEAR btn!!!
+       imgV.setOnTouchListener(new View.OnTouchListener() {
+           @Override
+           public boolean onTouch(View view, MotionEvent e) {
+               switch (e.getAction())
+               {
+                   case MotionEvent.ACTION_DOWN:
+                       startx = Math.round(e.getX());//rounds float to nearest int
+                       starty = Math.round(e.getY());
+                       return  true;
+                   case MotionEvent.ACTION_UP:
+                       endx = Math.round(e.getX());//rounds float to nearest int
+                       endy = Math.round(e.getY());
+                       drawLine();
+                       imgV.invalidate();
+                       break;
+               }
+               return  true;
+           }
+       });
         //endregion
 
         //SInce content view size is NOT measures until onCreate finishes. so nee to call a method AFTER that
@@ -129,7 +151,7 @@ public class Task1 extends Activity {
 
 
     //Override Activity method for key strokes
-    /*Activate the DPAD on emulator:
+    /*Sample code asked to: Activate the DPAD on emulator: BUT IT CAUSES clear BTN TO STOP WORKING!!!
     Go to: C:\Users\Shafi\.android\avd\<device name e.g. Nexus_5X_API_27.avd>\config.ini
     change the settings in config.ini file in .android folder
     hw.dPad=yes
@@ -144,31 +166,73 @@ public class Task1 extends Activity {
         switch (keyCode)
         {
             case KeyEvent.KEYCODE_DPAD_DOWN:
-                endy += 5;
-                drawLine( keyCode,canvas);
-                imgV.invalidate();
+                moveDown(imgV);//imgV is dummy arg. ust bcoz arrow imgs need to pass a View in OnClick(View v)
                 return  true;
             case KeyEvent.KEYCODE_DPAD_UP:
-                endy -=5;
-                drawLine( keyCode,canvas);
-                imgV.invalidate();
+                moveUp(imgV);
                 return  true;
             case KeyEvent.KEYCODE_DPAD_LEFT:
-                endx -=5;
-                drawLine( keyCode,canvas);
-                imgV.invalidate();
+                moveLeft(imgV);
                 return  true;
             case KeyEvent.KEYCODE_DPAD_RIGHT:
-                endx +=5;
-                drawLine( keyCode,canvas);
-                imgV.invalidate();
+                moveRight(imgV);
                 return  true;
         }
         return  false;//if none of 4 keys
     }
 
+
+
+    //Touch Screen events to draw line
+     /*
+    @Override
+    public boolean onTouchEvent(MotionEvent e) {
+        //return super.onTouchEvent(e);//this return makes code below UNREACHABLE.....!!!
+
+        switch (e.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                startx = Math.round(e.getX() - imgV.getLocationOnScreen(););//rounds float to nearest int
+                starty = Math.round(e.getY());
+                return  true;
+            case MotionEvent.ACTION_UP:
+                endx = Math.round(e.getX());//rounds float to nearest int
+                endy = Math.round(e.getY());
+                drawLine();
+                imgV.invalidate();
+                break;
+        }
+        return  true;
+    }*/
+
+    //region >>> Move Methods MUST be public or else ImageView's onClick() cannot fire them
+    public void moveRight(View v) {
+        endx +=5;
+        drawLine();
+        imgV.invalidate();
+    }
+
+    public void moveLeft(View v) {
+        endx -=5;
+        drawLine();
+        imgV.invalidate();
+    }
+
+    public void moveUp(View v) {
+        endy -=5;
+        drawLine();
+        imgV.invalidate();
+    }
+
+    public void moveDown(View v) {
+        endy += 5;
+        drawLine( );
+        imgV.invalidate();
+    }
+    //endregion
+
     //Draw Line
-    private void drawLine(int keyCode, Canvas canvas) {
+    private void drawLine() {
         ((EditText)findViewById(R.id.txtX)).setText(String.valueOf(endx));
         ((EditText)findViewById(R.id.txtY)).setText(String.valueOf(endy));
         canvas.drawLine(startx,starty,endx,endy,paint);
@@ -184,6 +248,7 @@ public class Task1 extends Activity {
         ((EditText)findViewById(R.id.txtY)).setText("");
         startx = endx = 10;
         starty= endy=10;
+        imgV.invalidate();//If sth changes & need to be reflected on screen, call Invalidate(). It calls onDraw() of view
     }
     private Paint setPaint() {
         paint.setColor(lineColor);
