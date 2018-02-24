@@ -2,29 +2,25 @@ package shafiq.shafiq_ur_rehman_comp304_lab_assign3;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Rect;
-import android.graphics.drawable.Icon;
 import android.os.Bundle;
 import android.support.v4.content.res.ResourcesCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 /**
- * Created by Shafiq on 2018-02-23.
+ * Created by Shafiq on 2018-02-24.
  */
 
 
+//region Inner Class
 
 public class MyCanvasView extends View {
 
@@ -40,13 +36,14 @@ public class MyCanvasView extends View {
     private static final float TOUCH_TOLERANCE = 4;//buffer so that not every touch is drawn. Rest is just interpolated
     Rect mFrame;
     EditText xStr, yStr;
+
     Bundle styleBundle;
     //endregion
 
     //default constructor
     public MyCanvasView(Context context) {
         super(context);
-   /*     //ref to parent activity
+        //ref to parent activity
         host = (Activity)context;
 
 
@@ -73,14 +70,14 @@ public class MyCanvasView extends View {
         framePaint = new Paint();
         framePaint.setColor(Color.GREEN);
         framePaint.setStyle(Paint.Style.STROKE); // default: FILL
-        framePaint.setStrokeWidth(10); // default: Hairline-width (really thin)*/
+        framePaint.setStrokeWidth(10); // default: Hairline-width (really thin)
     }
     //2nd constructor
     public MyCanvasView(Context context, Bundle styleBundle)
     {
         super(context);
 
-        //ref to parent activity
+    /*    //ref to parent activity
         host = (Activity)context;
         this.styleBundle = styleBundle;
 
@@ -109,36 +106,35 @@ public class MyCanvasView extends View {
         framePaint = new Paint();
         framePaint.setColor(Color.GREEN);
         framePaint.setStyle(Paint.Style.STROKE); // default: FILL
-        framePaint.setStrokeWidth(10); // default: Hairline-width (really thin)
+        framePaint.setStrokeWidth(10); // default: Hairline-width (really thin)*/
     }
     //3rd constructor
     public MyCanvasView(Context context, AttributeSet attributeSet)
     {
-    super(context);
-}
+        super(context);
+    }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
 
         //
-        //set color based on radio btn
-        switch (styleBundle.getString("color").trim())
-        {
-            case "Red":
-                mDrawColor = Color.RED;
-                break;
-            case "Green":
-                mDrawColor = Color.GREEN;
-                break;
-            case "Yellow":
-                mDrawColor = Color.YELLOW;
-                break;
-        }
+          /*  //set color based on radio btn
+            switch (styleBundle.getString("color").trim())
+            {
+                case "Red":
+                    mDrawColor = Color.RED;
+                    break;
+                case "Green":
+                    mDrawColor = Color.GREEN;
+                    break;
+                case "Yellow":
+                    mDrawColor = Color.YELLOW;
+                    break;
+            }*/
 
         //Display coordinates. Must be inside onDraw(). Doesn't work anywhere else
-        xStr = host.findViewById(R.id.txtValueX);
-        yStr = host.findViewById(R.id.txtValueY);
+
         xStr.setText(Float.toString(mX));
         yStr.setText(Float.toString(mY));
         xStr.setText(String.format("%.0f", mX));
@@ -162,9 +158,9 @@ public class MyCanvasView extends View {
     protected void onSizeChanged(int w, int h, int oldw, int oldh) {
         super.onSizeChanged(w, h, oldw, oldh);
 
-       // parent = findViewById(R.id.layoutCanvas);
+        // parent = findViewById(R.id.layoutCanvas);
 
-        
+
         // Create bitmap same as size of ImageView, create canvas to draw on that bitmap
         //mExtraBitmap = Bitmap.createBitmap(parent.getWidth(), parent.getHeight(), Bitmap.Config.ARGB_8888);//crashes app but with error:Could not find class 'android.graphics.drawable.RippleDrawable'!!!
         mExtraBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
@@ -236,3 +232,5 @@ into this listener, and we don't want to invalidate the view for those.*/
         mPath.reset();
     }
 }
+//endregion
+

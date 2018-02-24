@@ -1,20 +1,14 @@
 package shafiq.shafiq_ur_rehman_comp304_lab_assign3;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+
 import android.os.Bundle;
-import android.view.MotionEvent;
+
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
@@ -34,6 +28,7 @@ public class Task1 extends Activity {
     MyCanvasView myCanvasView;
     Bundle bundleForOnCreate, styleBundle;
 
+
     //W & H of View is NOT calculated unless onCreate() is fully finished executing. Hence get W/H via onClick()
     int vWidth, vHeight;
 
@@ -47,6 +42,7 @@ public class Task1 extends Activity {
         //Get ref to controls & get their values via Listeners
         radGp = findViewById(R.id.radGpColor);
         sizesDropDown = findViewById(R.id.spinThickness);
+
 
        radGp.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
             @Override
@@ -100,4 +96,6 @@ public class Task1 extends Activity {
     public void btnClk_ClearCanvas(View view) {
        onCreate(bundleForOnCreate);//re-draw canvas
     }
+
+
 }//class ends
