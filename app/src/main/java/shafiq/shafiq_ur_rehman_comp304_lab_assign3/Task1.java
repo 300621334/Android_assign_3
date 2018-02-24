@@ -11,13 +11,18 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+//Good = https://google-developer-training.gitbooks.io/android-developer-advanced-course-practicals/unit-5-advanced-graphics-and-views/lesson-11-canvas/11-1b-p-draw-on-a-canvas/11-1b-p-draw-on-a-canvas.html
+//https://google-developer-training.gitbooks.io/android-developer-advanced-course-practicals/unit-5-advanced-graphics-and-views/lesson-11-canvas/11-1a-p-create-a-simple-canvas/11-1a-p-create-a-simple-canvas.html
 public class Task1 extends AppCompatActivity {
 
     boolean isMouseDown = false, isMouseMoving = false;
-    ImageView imgV;
-    Bitmap bmp;
-    Canvas canvas;
-    Paint paint;
+    ImageView imgV;//ctrl that'll hold canvas(drawing surface made of px)
+    Bitmap bmp;//Holds pixels. Canvas is made up of pixels. Hence pass bmp to canvas. Canvas is wrapper around bmp
+    Canvas canvas;//surface on w to draw. Has fn to instruct the drawing.
+    Paint paint;//brush/pen to draw pixels with
+
+    //W & H of View is NOT calculated unless onCreate() is fully finished executing. Hence get W/H via onClick()
+    int vWidth, vHeight;
 
 
     @Override
@@ -25,16 +30,17 @@ public class Task1 extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task1);
         imgV = (ImageView) findViewById(R.id.imgInCanvas);
-        bmp = Bitmap.createBitmap(50/*imgV.getWidth()*/, 50 /*imgV.getHeight()*/, Bitmap.Config.ARGB_8888);//err W & Ht must b > 0!!
+        bmp = Bitmap.createBitmap(1/*imgV.getWidth()*/, 1 /*imgV.getHeight()*/, Bitmap.Config.ARGB_8888);//err W & Ht must b > 0 bcoz inside onCreate() W/Ht of view are not available yet//a Bitmap.config configuration object. A bitmap configuration describes how pixels are stored. Each color is encoded in 8 bits (8+8+8+8=4bytes)
+        //associate Canvas   with mBitmap, so that drawing on the canvas draws on the bitmap
         canvas = new Canvas(bmp);//providing a bmp explicitly to canvas. bcoz it's a wrapper around Bitmap. If a class extends View then onDraw(Canvas) of View provides a canvas for that view
-        canvas.drawColor(Color.BLACK);
-        imgV.draw(canvas);
+        canvas.drawColor(Color.BLACK);//paint the whole canvas as black surface
+        imgV.draw(canvas);//re-draws imgV on top of canvas I provide, by passing it to onDraw(canvas) instead of canvas provided by Android. Init draw was done at setContentView()
         imgV.setImageBitmap(bmp);
 
-
-        //canvas = setCanvas(canvas);
-        //paint = setPaint(paint);
         paint = new Paint();
+        //canvas = setCanvas(canvas);
+        paint = setPaint(paint);
+
 
         //MousePressed on ImageView containing canvas
         findViewById(R.id.layoutCanvas).setOnTouchListener(new View.OnTouchListener(){//Listener for mouse down etc
@@ -56,6 +62,8 @@ public class Task1 extends AppCompatActivity {
     private Paint setPaint(Paint p) {
         p.setColor(Color.RED);
         p.setStrokeWidth(5);
+        //p.setStyle(Paint.Style.FILL);//to fill rect etc, then no nee for setStrokeWidth() bcoz border will not be separately visible
+        p.setStyle(Paint.Style.STROKE);
         p.setAntiAlias(true);//smooth lines
         return p;
     }
@@ -67,5 +75,8 @@ public class Task1 extends AppCompatActivity {
 
     private void drawOnCanvas(float x, float y) {
         canvas.drawCircle(x, y, 50, paint);
+    }
+
+    public void getWidthHeigtht(View view) {
     }
 }
