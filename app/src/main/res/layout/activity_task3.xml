@@ -1,9 +1,62 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="shafiq.shafiq_ur_rehman_comp304_lab_assign3.Task3">
+    tools:context="shafiq.shafiq_ur_rehman_comp304_lab_assign3.Task3"
+    android:orientation="vertical">
 
-</android.support.constraint.ConstraintLayout>
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="100dp"
+      android:layout_weight="1"
+      android:orientation="horizontal">
+
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:text="Start Animation"
+        android:onClick="startAnimation"/>
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:text="Stop Animation"
+        android:onClick="stopAnimation"/>
+  </LinearLayout>
+
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:orientation="vertical">
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1">
+
+      <ImageView
+          android:id="@+id/imgEarth"
+          android:layout_width="54dp"
+          android:layout_height="49dp"
+          android:layout_marginLeft="170dp"
+          android:layout_marginTop="50dp"
+          app:srcCompat="@drawable/earth" />
+
+      <ImageView
+          android:id="@+id/imgSun"
+          android:layout_width="90dp"
+          android:layout_height="85dp"
+          android:layout_marginLeft="150dp"
+          android:layout_marginTop="200dp"
+          app:srcCompat="@drawable/sun" />
+    </FrameLayout>
+  </LinearLayout>
+
+</LinearLayout>

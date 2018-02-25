@@ -1,9 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="shafiq.shafiq_ur_rehman_comp304_lab_assign3.Task2">
 
-</android.support.constraint.ConstraintLayout>
+    <Button
+        android:id="@+id/btnStart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/imgViewAnim"
+        android:layout_alignLeft="@+id/imgViewAnim"
+        android:layout_alignStart="@+id/imgViewAnim"
+        android:layout_marginBottom="15dp"
+        android:onClick="startAnim"
+        android:text="Start Animation"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <Button
+        android:id="@+id/btnStop"
+        android:layout_width="148dp"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnStart"
+        android:layout_alignBottom="@+id/btnStart"
+        android:layout_toEndOf="@+id/btnStart"
+        android:layout_toRightOf="@+id/btnStart"
+        android:onClick="stopAnim"
+        android:text="Stop Animation"
+        tools:layout_editor_absoluteX="235dp"
+        tools:layout_editor_absoluteY="0dp" />
+
+    <ImageView
+        android:id="@+id/imgViewAnim"
+        android:layout_width="301dp"
+        android:layout_height="396dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@android:color/transparent"
+        tools:layout_editor_absoluteX="43dp"
+        tools:layout_editor_absoluteY="82dp" />
+</RelativeLayout>
