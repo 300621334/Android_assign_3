@@ -1,11 +1,15 @@
 package shafiq.shafiq_ur_rehman_comp304_lab_assign3;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -39,7 +43,22 @@ public class MainActivity extends AppCompatActivity {
     //Task-1, 2 or 3 clicked
     public void btnClk_SelectTask(View view) {
 
-        Intent i = new Intent(this, Task1.class);
+        Class<?> cls = Task1.class;
+
+        switch(((LinearLayout)view).getId())
+        {
+            case R.id.lay1:
+                cls = Task1.class;
+                break;
+            case R.id.lay2:
+                cls = Task2.class;
+                break;
+            case R.id.lay3:
+                cls = Task3.class;
+                break;
+        }
+
+        Intent i = new Intent(this, cls);
         startActivity(i);
     }
 }
