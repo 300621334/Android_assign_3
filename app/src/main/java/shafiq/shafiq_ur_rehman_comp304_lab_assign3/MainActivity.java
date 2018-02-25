@@ -13,12 +13,14 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
+    //Called when activity created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
     }
 
+    //Called when menu set up
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
          getMenuInflater().inflate(R.menu.tasksmenu, menu);//"menu" to inflate into
@@ -32,6 +34,7 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    //Called when menu item selected
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         startActivity( item.getIntent() );
@@ -40,11 +43,12 @@ public class MainActivity extends AppCompatActivity {
         return  true;
     }
 
-    //Task-1, 2 or 3 clicked
+    //When Task-1, 2 or 3 item is clicked
     public void btnClk_SelectTask(View view) {
 
         Class<?> cls = Task1.class;
 
+        //check for which item was clicked
         switch(((LinearLayout)view).getId())
         {
             case R.id.lay1:
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
                 break;
         }
 
+        //Move to next activity
         Intent i = new Intent(this, cls);
         startActivity(i);
     }

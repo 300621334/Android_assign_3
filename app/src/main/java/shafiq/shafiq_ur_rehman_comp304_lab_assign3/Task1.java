@@ -18,8 +18,6 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-//Good = https://google-developer-training.gitbooks.io/android-developer-advanced-course-practicals/unit-5-advanced-graphics-and-views/lesson-11-canvas/11-1b-p-draw-on-a-canvas/11-1b-p-draw-on-a-canvas.html
-//https://google-developer-training.gitbooks.io/android-developer-advanced-course-practicals/unit-5-advanced-graphics-and-views/lesson-11-canvas/11-1a-p-create-a-simple-canvas/11-1a-p-create-a-simple-canvas.html
 public class Task1 extends Activity {
 
     //region Variables
@@ -42,7 +40,7 @@ public class Task1 extends Activity {
 
     //endregion
 
-
+//Called when activity created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,11 +49,8 @@ public class Task1 extends Activity {
         radGp = findViewById(R.id.radGpColor);
         sizeSpinner = (Spinner) findViewById(R.id.spinSize);
 
-
-
-
+        //Instantiate Paint
         paint = new Paint();
-        //canvas = setCanvas(canvas);
         paint = setPaint();
 
 
@@ -106,7 +101,7 @@ public class Task1 extends Activity {
             }
         });
 
-        //Touch Listener works BUT messes up CLEAR btn!!!
+        //Touch Listener
        imgV.setOnTouchListener(new View.OnTouchListener() {
            @Override
            public boolean onTouch(View view, MotionEvent e) {
@@ -128,7 +123,7 @@ public class Task1 extends Activity {
        });
         //endregion
 
-        //SInce content view size is NOT measures until onCreate finishes. so nee to call a method AFTER that
+        //Since content view size is NOT measures until onCreate finishes. so nee to call a method AFTER that
         imgV.post(new Runnable()
         {
             @Override
@@ -150,12 +145,7 @@ public class Task1 extends Activity {
 
 
 
-    //Override Activity method for key strokes
-    /*Sample code asked to: Activate the DPAD on emulator: BUT IT CAUSES clear BTN TO STOP WORKING!!!
-    Go to: C:\Users\Shafi\.android\avd\<device name e.g. Nexus_5X_API_27.avd>\config.ini
-    change the settings in config.ini file in .android folder
-    hw.dPad=yes
-    hw.mainKeys=yes*/
+   //Keyboard events handled
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -181,29 +171,6 @@ public class Task1 extends Activity {
         return  false;//if none of 4 keys
     }
 
-
-
-    //Touch Screen events to draw line
-     /*
-    @Override
-    public boolean onTouchEvent(MotionEvent e) {
-        //return super.onTouchEvent(e);//this return makes code below UNREACHABLE.....!!!
-
-        switch (e.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-                startx = Math.round(e.getX() - imgV.getLocationOnScreen(););//rounds float to nearest int
-                starty = Math.round(e.getY());
-                return  true;
-            case MotionEvent.ACTION_UP:
-                endx = Math.round(e.getX());//rounds float to nearest int
-                endy = Math.round(e.getY());
-                drawLine();
-                imgV.invalidate();
-                break;
-        }
-        return  true;
-    }*/
 
     //region >>> Move Methods MUST be public or else ImageView's onClick() cannot fire them
     public void moveRight(View v) {
