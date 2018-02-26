@@ -18,7 +18,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Spinner;
 
-public class Task1 extends Activity {
+public class Task1 extends AppCompatActivity  {
 
     //region Variables
     boolean isMouseDown = false, isMouseMoving = false;
@@ -146,6 +146,9 @@ public class Task1 extends Activity {
 
 
    //Keyboard events handled
+    //This onKeyDown() is stopping phone's physical back btn to move back to prev act!!!
+    //resolves ONLY when the WHOLE method is removed. Removing inside code doesn't help!!!
+    //So I added KeyEvent.KEYCODE_BACK to go go back to previous activity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -157,7 +160,7 @@ public class Task1 extends Activity {
         {
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 moveDown(imgV);//imgV is dummy arg. ust bcoz arrow imgs need to pass a View in OnClick(View v)
-                return  true;
+                return  true;//Return true to prevent this event from being propagated further, or false to indicate that you have not handled this event and it should continue to be propagated.
             case KeyEvent.KEYCODE_DPAD_UP:
                 moveUp(imgV);
                 return  true;
@@ -167,7 +170,11 @@ public class Task1 extends Activity {
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 moveRight(imgV);
                 return  true;
+            case KeyEvent.KEYCODE_BACK:
+                super.onBackPressed();
+                return  true;
         }
+        //Return true to prevent this event from being propagated further, or false to indicate that you have not handled this event and it should continue to be propagated.
         return  false;//if none of 4 keys
     }
 
