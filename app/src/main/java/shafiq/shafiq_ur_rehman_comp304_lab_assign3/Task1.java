@@ -10,11 +10,8 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-<<<<<<< HEAD
 import android.view.ViewGroup;
-=======
 import android.widget.AdapterView;
->>>>>>> 1_Canvas
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -26,14 +23,13 @@ import android.widget.Spinner;
 
 //Good = https://google-developer-training.gitbooks.io/android-developer-advanced-course-practicals/unit-5-advanced-graphics-and-views/lesson-11-canvas/11-1b-p-draw-on-a-canvas/11-1b-p-draw-on-a-canvas.html
 //https://google-developer-training.gitbooks.io/android-developer-advanced-course-practicals/unit-5-advanced-graphics-and-views/lesson-11-canvas/11-1a-p-create-a-simple-canvas/11-1a-p-create-a-simple-canvas.html
-public class Task1 extends Activity {
+
+public class Task1 extends AppCompatActivity  {
 
     //region Variables
     boolean isMouseDown = false, isMouseMoving = false;
-<<<<<<< HEAD
     ImageView child;//ctrl that'll hold canvas(drawing surface made of px)
     ViewGroup parent;
-=======
     ImageView imgV;//ctrl that'll hold canvas(drawing surface made of px)
     Bitmap bmp;//Holds pixels. Canvas is made up of pixels. Hence pass bmp to canvas. Canvas is wrapper around bmp
     Canvas canvas;//surface on w to draw. Has fn to instruct the drawing.
@@ -46,53 +42,27 @@ public class Task1 extends Activity {
     RadioGroup radGp;
     float lineSize = 20;
     int lineColor = Color.RED;
->>>>>>> 1_Canvas
 
     //W & H of View is NOT calculated unless onCreate() is fully finished executing. Hence get W/H via onClick()
     int vWidth, vHeight;
 
-<<<<<<< HEAD
-=======
+
     //endregion
 
 
->>>>>>> 1_Canvas
+
+//Called when activity created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_task1);
-<<<<<<< HEAD
 
-        //make a custom View object
-        MyCanvasView myCanvasView;
-        myCanvasView = new MyCanvasView(this);
-
-        //replace ImageView: https://stackoverflow.com/questions/3334048/android-layout-replacing-a-view-with-another-view-on-run-time
-        child = (ImageView) findViewById(R.id.imgViewInCanvas);
-        parent =  (ViewGroup) child.getParent();
-        //int index = parent.indexOfChild(child);
-        parent.removeView(child);
-        parent.addView(myCanvasView/*, index*/);
-
-        //Display X,Y coordinates
-        String x = Float.toString( myCanvasView.mX);
-        String y = Float.toString( myCanvasView.mY);
-        ((EditText)findViewById(R.id.txtValueX)).setText(x);
-        ((EditText)findViewById(R.id.txtValueY)).setText(y);
-
-
-    }//onCreate ends
-}//class ends
-=======
         imgV = (ImageView) findViewById(R.id.imgInCanvas);
         radGp = findViewById(R.id.radGpColor);
         sizeSpinner = (Spinner) findViewById(R.id.spinSize);
 
-
-
-
+        //Instantiate Paint
         paint = new Paint();
-        //canvas = setCanvas(canvas);
         paint = setPaint();
 
 
@@ -143,7 +113,7 @@ public class Task1 extends Activity {
             }
         });
 
-        //Touch Listener works BUT messes up CLEAR btn!!!
+        //Touch Listener
        imgV.setOnTouchListener(new View.OnTouchListener() {
            @Override
            public boolean onTouch(View view, MotionEvent e) {
@@ -165,7 +135,7 @@ public class Task1 extends Activity {
        });
         //endregion
 
-        //SInce content view size is NOT measures until onCreate finishes. so nee to call a method AFTER that
+        //Since content view size is NOT measures until onCreate finishes. so nee to call a method AFTER that
         imgV.post(new Runnable()
         {
             @Override
@@ -187,12 +157,10 @@ public class Task1 extends Activity {
 
 
 
-    //Override Activity method for key strokes
-    /*Sample code asked to: Activate the DPAD on emulator: BUT IT CAUSES clear BTN TO STOP WORKING!!!
-    Go to: C:\Users\Shafi\.android\avd\<device name e.g. Nexus_5X_API_27.avd>\config.ini
-    change the settings in config.ini file in .android folder
-    hw.dPad=yes
-    hw.mainKeys=yes*/
+   //Keyboard events handled
+    //This onKeyDown() is stopping phone's physical back btn to move back to prev act!!!
+    //resolves ONLY when the WHOLE method is removed. Removing inside code doesn't help!!!
+    //So I added KeyEvent.KEYCODE_BACK to go go back to previous activity
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
@@ -204,7 +172,7 @@ public class Task1 extends Activity {
         {
             case KeyEvent.KEYCODE_DPAD_DOWN:
                 moveDown(imgV);//imgV is dummy arg. ust bcoz arrow imgs need to pass a View in OnClick(View v)
-                return  true;
+                return  true;//Return true to prevent this event from being propagated further, or false to indicate that you have not handled this event and it should continue to be propagated.
             case KeyEvent.KEYCODE_DPAD_UP:
                 moveUp(imgV);
                 return  true;
@@ -214,33 +182,14 @@ public class Task1 extends Activity {
             case KeyEvent.KEYCODE_DPAD_RIGHT:
                 moveRight(imgV);
                 return  true;
+            case KeyEvent.KEYCODE_BACK:
+                super.onBackPressed();
+                return  true;
         }
+        //Return true to prevent this event from being propagated further, or false to indicate that you have not handled this event and it should continue to be propagated.
         return  false;//if none of 4 keys
     }
 
-
-
-    //Touch Screen events to draw line
-     /*
-    @Override
-    public boolean onTouchEvent(MotionEvent e) {
-        //return super.onTouchEvent(e);//this return makes code below UNREACHABLE.....!!!
-
-        switch (e.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-                startx = Math.round(e.getX() - imgV.getLocationOnScreen(););//rounds float to nearest int
-                starty = Math.round(e.getY());
-                return  true;
-            case MotionEvent.ACTION_UP:
-                endx = Math.round(e.getX());//rounds float to nearest int
-                endy = Math.round(e.getY());
-                drawLine();
-                imgV.invalidate();
-                break;
-        }
-        return  true;
-    }*/
 
     //region >>> Move Methods MUST be public or else ImageView's onClick() cannot fire them
     public void moveRight(View v) {
@@ -306,4 +255,3 @@ public class Task1 extends Activity {
     }
 
 }
->>>>>>> 1_Canvas

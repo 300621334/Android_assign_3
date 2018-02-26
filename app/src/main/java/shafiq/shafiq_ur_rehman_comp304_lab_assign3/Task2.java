@@ -17,6 +17,7 @@ public class Task2 extends AppCompatActivity {
     AnimationDrawable anim = new AnimationDrawable();
     //endregion
 
+    //Called when activity created
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -51,12 +52,14 @@ public class Task2 extends AppCompatActivity {
         img.setBackground(anim);
     }
 
+    //Start Animation
     public void startAnim(View view)
     {
         anim.setVisible(true, false);
         anim.start();
     }
 
+    //Stop Animation
     public void stopAnim(View view)
     {
         anim.stop();
