@@ -158,6 +158,13 @@ public class Task1 extends AppCompatActivity  {
 
 
    //Keyboard events handled
+    //Override Activity method for key strokes
+    /*Sample code asked to: Activate the DPAD on emulator: BUT IT CAUSES clear BTN TO STOP WORKING!!!
+    Go to: C:\Users\Shafi\.android\avd\<device name e.g. Nexus_5X_API_27.avd>\config.ini
+    change the settings in config.ini file in .android folder
+    hw.dPad=yes
+    hw.mainKeys=yes*/
+     //Keyboard events handled
     //This onKeyDown() is stopping phone's physical back btn to move back to prev act!!!
     //resolves ONLY when the WHOLE method is removed. Removing inside code doesn't help!!!
     //So I added KeyEvent.KEYCODE_BACK to go go back to previous activity
